@@ -10,7 +10,6 @@ class Model:
         self._pacchetto_ottimo = []
         self._valore_ottimo: int = -1
         self._costo = 0
-
         # TODO: Aggiungere eventuali altri attributi
 
         # Caricamento
@@ -38,6 +37,19 @@ class Model:
             --> Ogni Escursione ha un set di PuntoInteresse.
             --> Ogni PuntoInteresse ha un set di Escursioni.
         """
+        relazioni = EscursioneDAO.get_escursioni_punti_interesse()
+        if relazioni is None:
+            return
+        for rel in relazioni:
+            id_escursione = rel["id_escursione"]
+            id_punto_interesse = rel["id_punto_interesse"]
+
+            escursione = self.escursioni_map[id_escursione]
+            punto_interesse = self.punti_interesse_map[id_punto_interesse]
+
+            escursione.set_punto_interesse.add(punto_interesse)
+            punto_interesse.set_escursioni.add(escursione)
+
         # TODO
 
     def genera_pacchetto(self, id_parco: str, max_giorni: int = None, max_budget: float = None):
